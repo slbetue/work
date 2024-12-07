@@ -13,16 +13,18 @@ typedef struct HuffmanNode{
 
 string InputCode();
 map<char,int> analysecode(string source);
-HuffmanTree CreateHuffTree();
+HuffmanTree CreateHuffTree(map<char,int> map_1);
 string CreateHuffmanCode(HuffmanTree Tree);
 
 int main()
 {
     string code;
+    map<char,int> mapcode;
     string HuffmanCode;
     HuffmanTree HT;
     code = InputCode();
-    HT = CreateHuffTree(code);
+    mapcode = analysecode(code);
+    HT = CreateHuffTree(mapcode);
     return 0;
 }
 
@@ -38,12 +40,25 @@ map<char,int> analysecode(string source){
     }
     return m;
 }
+struct comp{
+    bool operator()(const pair<char,int>& lpair,const pair<char,int>& rpair) {
+        return lpair.second < rpair.second;
+    }
+};
 
-bool comp(const pair<char,int>& lpair,const pair<char,int>& rpair) {
-    return lpair.second < rpair.second;
-}
-HuffmanTree CreateHuffTree(){
-    priority_queue<pair<string,int>,vector<pair<string,int>>,comp> pr;
-
-    return 
+HuffmanTree CreateHuffTree(map<char,int> s){
+    priority_queue<pair<char,int>,vector<pair<char,int>>,comp> pr;
+    for(const auto i : s){
+        pr.push(i);
+    }
+    int n = pr.size();
+    HuffmanTree HTree = new HuffNode[2 * n];
+    int i = 1;
+    while(!pr.empty())
+    {
+        HTree[i].data = pr.top().first;
+        HTree[i].weight = pr.top().second;
+        
+    }
+    return HTree;
 }
